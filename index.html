@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mailing Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="header-inner">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">MA</div>
+            <div class="brand-text">
+              <div id="appTitle" class="app-title">Mailing Academy</div>
+              <div id="appSubtitle" class="app-subtitle">Learn email deliverability step-by-step</div>
+            </div>
+          </div>
+
+          <div class="header-actions">
+            <button id="langToggle" class="lang-toggle" type="button" aria-label="Language">EN</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="mainContent" class="app-main">
+        <button id="backToMap" class="back-map hidden" type="button">← <span id="backToMapText">Back to Map</span></button>
+        <section id="page-home" class="page">
+          <div class="hero">
+            <div class="hero-copy">
+              <h1 id="homeHeadline" class="hero-title">Your Email Journey, Visualized</h1>
+              <p id="homeIntro" class="hero-intro"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title" id="simTitle">Interactive Journey Simulation</div>
+              <div class="card-subtitle" id="simSubtitle">Tap nodes to deep-dive. Watch the envelope flow.</div>
+            </div>
+
+            <div class="sim-wrap">
+              <div class="sim-controls" aria-label="Simulation controls">
+                <button id="simPlayPause" class="sim-ctrl sim-ctrl-primary" type="button">▶ Start Journey</button>
+                <button id="simReset" class="sim-ctrl" type="button">⟲ Reset</button>
+              </div>
+              <svg id="journeySvg" viewBox="0 0 980 360" role="img" aria-label="Email journey simulation">
+                <defs>
+                  <linearGradient id="pathGlow" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#fb923c" stop-opacity="0.35" />
+                    <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#22c55e" stop-opacity="0.35" />
+                  </linearGradient>
+
+                  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+
+                  <path id="smtpPath" d="M 90 120 C 190 70, 270 70, 330 120 S 470 190, 560 120 S 700 50, 770 120 S 860 190, 920 120" />
+                  <path id="imapPath" d="M 920 120 C 880 230, 780 280, 660 280 S 420 280, 330 230 S 190 160, 90 200" />
+                  <path id="branchPass" d="M 560 120 C 620 170, 700 190, 770 180" />
+                  <path id="branchSpam" d="M 560 120 C 700 60, 840 60, 920 120" />
+                  <path id="branchBounce" d="M 560 120 C 610 30, 690 20, 770 40" />
+
+                  <marker id="arrowHead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#fb923c" />
+                  </marker>
+                </defs>
+
+                <path d="M 90 120 C 190 70, 270 70, 330 120 S 470 190, 560 120 S 700 50, 770 120 S 860 190, 920 120" class="sim-path smtp-flux" marker-end="url(#arrowHead)" />
+                <path d="M 920 120 C 880 230, 780 280, 660 280 S 420 280, 330 230 S 190 160, 90 200" class="sim-path imap-flux" marker-end="url(#arrowHead)" />
+
+                <path d="M 560 120 C 620 170, 700 190, 770 180" class="sim-branch pass-flux" marker-end="url(#arrowHead)" />
+                <path d="M 560 120 C 700 60, 840 60, 920 120" class="sim-branch fail-flux" marker-end="url(#arrowHead)" />
+                <path d="M 560 120 C 610 30, 690 20, 770 40" class="sim-branch bounce-flux" marker-end="url(#arrowHead)" />
+
+                <g id="scanRing" class="scan-ring" aria-hidden="true">
+                  <circle cx="560" cy="120" r="54" />
+                </g>
+
+                <foreignObject x="30" y="60" width="120" height="120" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="mua-s" id="node-mua-s" role="button" tabindex="0" aria-label="MUA Sender">
+                    <div class="compound-center">
+                      <div class="icon pc" aria-hidden="true"></div>
+                      <div class="compound-label">MUA (Sender)</div>
+                    </div>
+                    <div class="compound-part" data-part="hw">Hardware</div>
+                    <div class="compound-part" data-part="sw">Client</div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="260" y="60" width="140" height="120" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="mta-s" id="node-mta" role="button" tabindex="0" aria-label="MTA Sender">
+                    <div class="compound-center">
+                      <div class="icon server" aria-hidden="true"></div>
+                      <div class="compound-label">MTA (Sender)</div>
+                    </div>
+                    <div class="compound-part" data-part="queue">Input Queue</div>
+                    <div class="compound-part" data-part="engine">Processing</div>
+                    <div class="compound-part" data-part="rotate">IP Rotation</div>
+                    <div class="compound-part" data-part="out">Outbound</div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="430" y="30" width="140" height="120" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="dns" id="node-dns" role="button" tabindex="0" aria-label="DNS">
+                    <div class="compound-center">
+                      <div class="icon globe" aria-hidden="true"></div>
+                      <div class="compound-label">DNS</div>
+                    </div>
+                    <div class="compound-part" data-part="spf">SPF</div>
+                    <div class="compound-part" data-part="dkim">DKIM</div>
+                    <div class="compound-part" data-part="dmarc">DMARC</div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="520" y="40" width="160" height="140" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="filter" id="node-filter" role="button" tabindex="0" aria-label="Filter">
+                    <div class="compound-center">
+                      <div class="icon shield" aria-hidden="true"></div>
+                      <div class="compound-label">Filter</div>
+                    </div>
+                    <div class="compound-part" data-part="av">AV</div>
+                    <div class="compound-part" data-part="rules">Rules</div>
+                    <div class="compound-part" data-part="ml">ML</div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="720" y="60" width="170" height="120" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="mta-r" id="node-mta-r" role="button" tabindex="0" aria-label="Recipient MTA/MDA">
+                    <div class="compound-center">
+                      <div class="icon server" aria-hidden="true"></div>
+                      <div class="compound-label">MTA/MDA (Rcpt)</div>
+                    </div>
+                    <div class="compound-part" data-part="mx">MX</div>
+                    <div class="compound-part" data-part="store">Mailbox Store</div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="850" y="170" width="130" height="120" class="fo-node">
+                  <div xmlns="http://www.w3.org/1999/xhtml" class="compound" data-node="mua-r" id="node-mua-r" role="button" tabindex="0" aria-label="Recipient MUA">
+                    <div class="compound-center">
+                      <div class="icon pc" aria-hidden="true"></div>
+                      <div class="compound-label">MUA (Rcpt)</div>
+                    </div>
+                    <div class="compound-part" data-part="imap">IMAP/POP3</div>
+                    <div class="compound-part" data-part="ui">UI</div>
+                  </div>
+                </foreignObject>
+
+                <g id="node-inbox" class="sim-node" tabindex="0" role="button" aria-label="Inbox">
+                  <circle cx="770" cy="180" r="34" class="node-ring" />
+                  <circle cx="770" cy="180" r="26" class="node-core" />
+                  <g transform="translate(770 180)" class="node-icon">
+                    <path d="M -12 -9 h 24 v 18 h -24 z" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M -12 0 h 24" fill="none" stroke="currentColor" stroke-width="2" />
+                  </g>
+                  <text x="770" y="232" text-anchor="middle" class="node-label" id="label-inbox">Inbox</text>
+                </g>
+
+                <g id="node-spam" class="sim-node" tabindex="0" role="button" aria-label="Spam">
+                  <circle cx="920" cy="120" r="34" class="node-ring" />
+                  <circle cx="920" cy="120" r="26" class="node-core" />
+                  <g transform="translate(920 120)" class="node-icon">
+                    <path d="M -10 -10 L 10 10" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M 10 -10 L -10 10" fill="none" stroke="currentColor" stroke-width="2" />
+                  </g>
+                  <text x="920" y="172" text-anchor="middle" class="node-label" id="label-spam">Spam</text>
+                </g>
+
+                <g id="node-bounce" class="sim-node" tabindex="0" role="button" aria-label="Bounce">
+                  <circle cx="770" cy="40" r="30" class="node-ring" />
+                  <circle cx="770" cy="40" r="22" class="node-core" />
+                  <g transform="translate(770 40)" class="node-icon">
+                    <path d="M -10 0 h 20" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M 0 -10 v 20" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7" />
+                  </g>
+                  <text x="770" y="84" text-anchor="middle" class="node-label">Bounce</text>
+                </g>
+
+                <g id="envelope" class="envelope" filter="url(#softGlow)">
+                  <circle r="16" fill="#0b1220" />
+                  <path d="M -12 -6 h 24 v 14 h -24 z" fill="#0b1220" stroke="#fb923c" stroke-width="2" />
+                  <path d="M -12 -6 L 0 2 L 12 -6" fill="none" stroke="#fb923c" stroke-width="2" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title" id="modulesTitle">Modules</div>
+              <div class="card-subtitle" id="modulesSubtitle">Choose a lesson to start learning</div>
+            </div>
+
+            <div id="modulesGrid" class="modules-grid" aria-label="Modules"></div>
+          </div>
+        </section>
+
+        <section id="page-dive" class="page hidden">
+          <div class="lesson-head">
+            <button id="closeDive" class="btn" type="button">← <span id="closeDiveText">Back</span></button>
+            <div class="lesson-meta">
+              <div id="diveLevel" class="pill">Deep Dive</div>
+              <h2 id="diveTitle" class="lesson-title">Deep Dive</h2>
+            </div>
+          </div>
+          <article id="diveBody" class="lesson-body"></article>
+        </section>
+
+        <section id="page-lesson" class="page hidden">
+          <div class="lesson-head">
+            <button id="backToHome" class="btn" type="button">← <span id="backText">Back</span></button>
+            <div class="lesson-meta">
+              <div id="lessonLevel" class="pill">Level</div>
+              <h2 id="lessonTitle" class="lesson-title">Lesson</h2>
+            </div>
+          </div>
+
+          <article id="lessonBody" class="lesson-body"></article>
+        </section>
+
+        <section id="page-legal" class="page hidden">
+          <div class="lesson-head">
+            <button id="closeLegal" class="btn" type="button">← <span id="closeLegalText">Close</span></button>
+            <div class="lesson-meta">
+              <h2 id="legalTitle" class="lesson-title">Legal</h2>
+            </div>
+          </div>
+          <article id="legalBody" class="lesson-body"></article>
+        </section>
+
+      </main>
+
+      <footer class="app-footer">
+        <div class="footer-inner">
+          <div class="footer-col">
+            <div class="footer-brand">Mailing Academy</div>
+            <div id="footerTagline" class="footer-text">Deliverability made practical.</div>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title" id="footerQuick">Quick Links</div>
+            <button class="link" type="button" data-legal="privacy" id="linkPrivacy">Privacy Policy</button>
+            <button class="link" type="button" data-legal="terms" id="linkTerms">Terms of Service</button>
+            <button class="link" type="button" data-legal="disclaimer" id="linkDisclaimer">Disclaimer</button>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title" id="footerContact">Stay Connected</div>
+            <div class="footer-text" id="footerContactText">Add your links here.</div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span id="copyright">© <span id="year"></span> Mailing Academy</span>
+        </div>
+      </footer>
+    </div>
+
+    <script src="content.js"></script>
+    <script src="navigation.js"></script>
+    <script src="assets/simulation.js"></script>
+  </body>
+</html>
